@@ -58,10 +58,11 @@ Sẽ thực hiện ở bước 4.
 POOL_ID="github-pool"
 PROVIDER_ID="github-provider"
 
-gcloud iam workload-identity-pools create "${POOL_ID}" \
+gcloud iam workload-identity-pools providers delete github-provider \
+  --workload-identity-pool="github-pool" \
   --location="global" \
-  --display-name="GitHub Actions Pool"
-
+  --project="my-cdp-demo-01" \
+  --quiet
 
 gcloud iam workload-identity-pools providers create-oidc "${PROVIDER_ID}" \
   --location="global" \
