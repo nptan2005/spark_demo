@@ -127,15 +127,15 @@ permissions:
   id-token: write
   contents: read
 
-env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-  COMPOSER_ENV: ${{ secrets.COMPOSER_ENV }}
-  COMPOSER_REGION: ${{ secrets.COMPOSER_REGION }}
-  DAGS_DIR: "dags"
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    env:
+      PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+      COMPOSER_ENV: ${{ secrets.COMPOSER_ENV }}
+      COMPOSER_REGION: ${{ secrets.COMPOSER_REGION }}
+      DAGS_DIR: dags
 
     steps:
       - name: Checkout code
@@ -151,7 +151,6 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ env.PROJECT_ID }}
-          export_default_credentials: true
 
       - name: Get Composer DAGS bucket
         id: dag_bucket
@@ -169,7 +168,7 @@ jobs:
       - name: Trigger DAG (optional)
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          echo "Triggering DAG: spark_test_dag (change name if needed)"
+          echo "Triggering DAG: spark_test_dag"
           gcloud composer environments run "${{ env.COMPOSER_ENV }}" \
             --location "${{ env.COMPOSER_REGION }}" \
             dags trigger -- spark_test_dag || true
