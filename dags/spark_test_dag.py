@@ -15,7 +15,7 @@ JOB = {
 }
 
 with DAG(
-    dag_id="spark_test_dag",
+    dag_id="spark_ci_cd_dag",
     schedule_interval=None,
     start_date=datetime(2024, 1, 1),
     catchup=False,
