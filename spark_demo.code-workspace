@@ -1,0 +1,61 @@
+{
+  
+  "settings": {
+    // ==== PYTHON & CONDA ====
+    "python.defaultInterpreterPath": "/opt/homebrew/anaconda3/envs/cpd_env/bin/python",
+    "python.terminal.activateEnvironment": true,
+    "python.condaPath": "/opt/homebrew/anaconda3/bin/conda",
+    // ==== EDITOR ====
+    "editor.fontSize": 14,
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.wordWrap": "on",
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+      "--line-length",
+      "120"
+    ],
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll.eslint": "explicit"
+    },
+    "java.autobuild.enabled": false,
+    "java.import.maven.enabled": false,
+    "java.import.gradle.enabled": false,
+    "java.referencesCodeLens.enabled": false,
+    "java.semanticHighlighting.enabled": false,
+    "java.codeActions.saveActions.organizeImports": false,
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.showBuildStatusOnStart.enabled": false,
+    "java.project.importHint": "off",
+    "java.configuration.maven.enableAutomaticDownloadSources": false,
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "java.server.launchMode": "Standard",
+    "maven.server.enabled": false,
+    "maven.workspace.trust": false,
+    "maven.terminal.useJavaHome": true,
+    "maven.executable.path": "",
+    "redhat.telemetry.enabled": false,
+    // ==== EXCLUDE HEAVY JAVA MODULES ====
+    "files.exclude": {
+      "**/target/**": true,
+      "**/images/ranger/**": true,
+      "**/images/atlas/**": true,
+      "**/.settings/**": true
+    },
+    "search.exclude": {
+      "**/target/**": true,
+      "**/images/ranger/**": true,
+      "**/images/atlas/**": true
+    },
+    "files.watcherExclude": {
+      "**/target/**": true,
+      "**/images/ranger/**": true,
+      "**/images/atlas/**": true,
+      "**/node_modules/**": true
+    },
+    // ==== TERMINAL ====
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.cwd": "${workspaceFolder}"
+  }
+}
