@@ -1,0 +1,49 @@
+name: Deploy DAGs to Composer
+
+on:
+    push:
+        branches:
+            - "main"
+        paths:
+            - "dags/**"
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: Authenticate to Google Cloud
+              uses: google-github-actions/auth@v2
+              with:
+                  workload_identity_provider: "projects/240388703642/locations/global/workloadIdentityPools/github-pool/providers/github-provider-2"
+                  service_account: "ci-deployer@my-cdp-demo-01.iam.gserviceaccount.com"
+
+            - name: Set up gcloud
+              uses: google-github-actions/setup-gcloud@v2
+              with:
+                  project_id: "my-cdp-demo-01"
+
+            - name: Get Composer DAG bucket
+              id: bucket
+              run: |
+                  B=$(gcloud composer environments describe "airflow-test-01" \
+                      --location "asia-southeast1" \
+                      --format="value(config.dagGcsPrefix)")
+                  echo "bucket=$B" >> $GITHUB_OUTPUT
+
+            - name: Upload DAGs
+              run: |
+                  gsutil -m rsync -r ./dags "${{ steps.bucket.outputs.bucket }}"
+
+            - name: Trigger DAG (optional)
+              run: |
+                  gcloud composer environments run "airflow-test-01" \
+                    --location "asia-southeast1" \
+                    dags trigger -- spark_test_dag || true
